@@ -1,0 +1,39 @@
+.task
+  margin-top: 20px
+  font-size: 17px
+  font-family: fantasy
+  display: flex
+  justify-content: space-between
+  align-items: center
+  line-height: 24px
+
+  &_done
+
+    .task__text
+      text-decoration: line-through
+
+  &__button
+    font-size: 12px
+    height: 30px
+    padding: 0px 10px
+    border: 1px solid
+    cursor: pointer
+    margin-left: 10px
+
+    &-block
+      display: inline-block
+
+    &_green
+      color: #1dc7b9
+      border-color: #1dc7b9
+
+    &_red
+      color: #C1607A
+      border-color: #C1607A
+
+  &__text
+    line-height: 24px
+    max-width: 300px
+
+    &:first-letter
+      text-transform: capitalize

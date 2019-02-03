@@ -5,9 +5,9 @@ class InputField extends Component {
 
     render () {
         return (
-            <div>
-                <input onChange={this.props.handler} type='text' className='inputField__input'/>
-                <button type='button' className='inputField__button'>Add</button>
+            <div className="inputField">
+                <input onChange={this.props.input} type='text' className='inputField__input' value={this.props.typedText}/>
+                <button type='button' className='inputField__button' onClick={this.props.add}>Add</button>
             </div>
         )
     }
