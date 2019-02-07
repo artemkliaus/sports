@@ -7,7 +7,7 @@ class InputField extends Component {
         return (
             <div className="inputField">
                 <input onChange={this.props.input} type='text' className='inputField__input' value={this.props.typedText}/>
-                <button type='button' className='inputField__button' onClick={this.props.add}>Add</button>
+                <button type='button' className='btn btn-primary' onClick={this.props.add}>Add</button>
             </div>
         )
     }

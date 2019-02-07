@@ -13,7 +13,7 @@ class App extends Component {
         }
     }
 
-     addTask () {
+    addTask () {
         const { typedText, tasks } = this.state;
 
         if (typedText) {
@@ -28,9 +28,9 @@ class App extends Component {
                 typedText: ''
             });
         }
-     }
+    }
 
-     inputHandler (event) {
+    inputHandler (event) {
         const newText = event.target.value;
         const { typedText } = this.state;
 
@@ -39,17 +39,29 @@ class App extends Component {
         });
 
         console.log(newText);
-     }
+    }
 
-     closeTask (event) {
+    closeTask (event) {
         const { tasks } = this.state;
-        const number = event.target.getAttribute('data-number');
+        const number = event.target.parentElement.getAttribute('data-number');
         const newTasks = tasks.slice();
-        newTasks[number].done = true;
+        const done = newTasks[number].done;
+        newTasks[number].done = done ? false : true;
         this.setState({
             tasks: newTasks
         });
-     }
+    }
+
+    removeTask (event) {
+        const { tasks } = this.state;
+        const number = event.target.parentElement.getAttribute('data-number');
+        const newTasks = tasks.slice();
+        newTasks.splice(number, 1);
+        this.setState({
+            tasks: newTasks
+        });
+    }
+
 
     render () {
         return (
@@ -60,7 +72,7 @@ class App extends Component {
                             typedText={this.state.typedText}/>
                 <div className="tasks-list">
                     {this.state.tasks.map((i, ind) => {
-                        return <Task data={i} key={ind} closeTask={this.closeTask.bind(this)}/>
+                        return <Task data={i} key={ind} closeTask={this.closeTask.bind(this)} removeTask={this.removeTask.bind(this)}/>
                     })}
                 </div>
             </div>
