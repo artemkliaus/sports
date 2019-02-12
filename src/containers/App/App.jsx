@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import InputField from '../InputField/InputField.jsx';
+import InputField from '../../components/InputField/InputField.jsx';
 import Task from '../Task/Task.jsx';
+import Info from '../../components/Info/Info.jsx';
 import './App.sass';
 
 class App extends Component {
@@ -11,6 +12,11 @@ class App extends Component {
             typedText: '',
             tasks: []
         }
+
+        this.closeTask = this.closeTask.bind(this);
+        this.removeTask = this.removeTask.bind(this);
+        this.addTask = this.addTask.bind(this);
+        this.inputHandler = this.inputHandler.bind(this);
     }
 
     addTask () {
@@ -18,9 +24,10 @@ class App extends Component {
 
         if (typedText) {
             const newTasks = tasks.slice();
+            const id = Math.random().toString();
             newTasks.push({
                 text: typedText,
-                index: tasks.length
+                index: id
             });
 
             this.setState({
@@ -31,22 +38,19 @@ class App extends Component {
     }
 
     inputHandler (event) {
-        const newText = event.target.value;
+        const { value } = event.target;
         const { typedText } = this.state;
 
-        this.setState({
-            typedText: newText
-        });
-
-        console.log(newText);
+        this.setState({typedText: value});
     }
 
     closeTask (event) {
         const { tasks } = this.state;
-        const number = event.target.parentElement.getAttribute('data-number');
+        const number = event.target.parentElement.getAttribute('data-id');
         const newTasks = tasks.slice();
-        const done = newTasks[number].done;
-        newTasks[number].done = done ? false : true;
+        const currObj = newTasks.find((x, i) => x.index === number);
+        const done = currObj.done;
+        currObj.done = done ? false : true;
         this.setState({
             tasks: newTasks
         });
@@ -54,9 +58,13 @@ class App extends Component {
 
     removeTask (event) {
         const { tasks } = this.state;
-        const number = event.target.parentElement.getAttribute('data-number');
+        const number = event.target.parentElement.getAttribute('data-id');
+        let position = null;
         const newTasks = tasks.slice();
-        newTasks.splice(number, 1);
+        const currObj = newTasks.find((x, i) => {
+            if (x.index === number) position = i;
+        });
+        newTasks.splice(position, 1);
         this.setState({
             tasks: newTasks
         });
@@ -67,14 +75,15 @@ class App extends Component {
         return (
             <div className='todo'>
                 <h1 className='todo__title'>Todo List</h1>
-                <InputField input={this.inputHandler.bind(this)}
-                            add={this.addTask.bind(this)}
+                <InputField input={this.inputHandler}
+                            add={this.addTask}
                             typedText={this.state.typedText}/>
                 <div className="tasks-list">
-                    {this.state.tasks.map((i, ind) => {
-                        return <Task data={i} key={ind} closeTask={this.closeTask.bind(this)} removeTask={this.removeTask.bind(this)}/>
+                    {this.state.tasks.map((el) => {
+                        return <Task data={el} key={el.index} closeTask={this.closeTask} removeTask={this.removeTask}/>
                     })}
                 </div>
+                <Info count={this.state.tasks.length}/>
             </div>
         )
     }

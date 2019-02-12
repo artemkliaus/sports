@@ -6,6 +6,7 @@
   justify-content: space-between
   align-items: center
   line-height: 24px
+  animation: slide-up 0.4s ease
 
   &_done
 
@@ -15,8 +16,9 @@
 
   &__button-block
     display: inline-flex
-    justify-content: space-around
+    justify-content: space-between
     min-width: 190px
+    margin-left: 10px
 
   &__text
     line-height: 24px
@@ -24,3 +26,13 @@
 
     &:first-letter
       text-transform: capitalize
+
+
+@keyframes slide-up
+  0%
+      opacity: 0
+      transform: translateY(20px)
+
+  100%
+    opacity: 1
+    transform: translateY(0)
