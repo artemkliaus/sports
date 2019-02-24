@@ -1,2 +1,3 @@
 # todoApp
-to do application
+to do application 
+made with React & Redux
