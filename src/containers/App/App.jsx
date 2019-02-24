@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import InputField from '../../components/InputField/InputField.jsx';
-import Task from '../Task/Task.jsx';
+import Task from '../../components/Task/Task.jsx';
 import Info from '../../components/Info/Info.jsx';
 import './App.sass';
+import addTodo from '../../actions/index.js';
 
 class App extends Component {
 
@@ -10,31 +12,49 @@ class App extends Component {
         super();
         this.state = {
             typedText: '',
-            tasks: []
+            tasks: [],
+            hideCompleted: false
         }
 
         this.closeTask = this.closeTask.bind(this);
         this.removeTask = this.removeTask.bind(this);
         this.addTask = this.addTask.bind(this);
         this.inputHandler = this.inputHandler.bind(this);
+        this.hideCompleted = this.hideCompleted.bind(this);
     }
 
     addTask () {
         const { typedText, tasks } = this.state;
 
         if (typedText) {
-            const newTasks = tasks.slice();
-            const id = Math.random().toString();
-            newTasks.push({
-                text: typedText,
-                index: id
-            });
+            this.dispatch(addTodo);
+            // const newTasks = tasks.slice();
+            // const id = Math.random().toString();
+            // newTasks.push({
+            //     text: typedText,
+            //     index: id,
+            //     done: false,
+            //     hide: false
+            // });
 
-            this.setState({
-                tasks: newTasks,
-                typedText: ''
-            });
+            // this.setState({
+            //     tasks: newTasks,
+            //     typedText: ''
+            // });
         }
+    }
+
+    hideCompleted (event) {
+        const { tasks, hideCompleted } = this.state;
+        const newTasks = tasks.slice();
+        const newArr = newTasks.map((el) => {
+            if (el.done) el.hide = !el.hide;
+            return el;
+        });
+        this.setState({
+            tasks: newArr,
+            hideCompleted: !hideCompleted
+        });
     }
 
     inputHandler (event) {
@@ -49,8 +69,7 @@ class App extends Component {
         const number = event.target.parentElement.getAttribute('data-id');
         const newTasks = tasks.slice();
         const currObj = newTasks.find((x, i) => x.index === number);
-        const done = currObj.done;
-        currObj.done = done ? false : true;
+        currObj.done = !currObj.done;
         this.setState({
             tasks: newTasks
         });
@@ -83,10 +102,10 @@ class App extends Component {
                         return <Task data={el} key={el.index} closeTask={this.closeTask} removeTask={this.removeTask}/>
                     })}
                 </div>
-                <Info count={this.state.tasks.length}/>
+                <Info count={this.state.tasks.length} hideFunc={this.hideCompleted} hidden={this.state.hideCompleted}/>
             </div>
         )
     }
 }
 
-export default App;
+export default connect({App});

@@ -1,15 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import './Task.sass';
 
 
-class Task extends Component {
+function Task (props) {
 
-
-  render () {
-    const { data, closeTask, removeTask} = this.props;
+    const { data, closeTask, removeTask} = props;
     let classBlock = 'task';
     let classButton = 'btn';
     classBlock += data.done ? ' task_done' : '';
+    classBlock += data.hide ? ' task_hide' : '';
     classButton += data.done ? ' btn-primary' : ' btn-success';
 
     return (
@@ -21,7 +20,6 @@ class Task extends Component {
         </div>
       </div>
     )
-  }
 }
 
 export default Task;
