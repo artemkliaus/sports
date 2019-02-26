@@ -1,18 +1,12 @@
-export const addTodo = (text, id) => {
-	console.log('ACTION', text, id);
-	return {
-		type: 'ADD_TODO',
-		id,
-		text,
-		done: false,
-		hide: false
-	}
-};
+export const addTask = (text, id) => ({
+	type: 'ADD_TASK',
+	id,
+	text,
+	done: false,
+	hide: false
+});
 
-export const typeText = (text) => {
-	console.log('TYPE_TEXT', text);
-	return {
-		type: 'TYPE_TEXT',
-		text
-	}
-}
+export const typeText = (text) => ({
+	type: 'TYPE_TEXT',
+	text
+})

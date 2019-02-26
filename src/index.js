@@ -10,8 +10,6 @@ import './styles.sass';
 const logger = createLogger();
 const store = createStore(rootReducer, applyMiddleware(logger));
 
-console.log('STORE', store);
-
 ReactDOM.render(
 	<Provider store={store}>
 		<App />
