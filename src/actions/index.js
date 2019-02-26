@@ -8,3 +8,11 @@ export const addTodo = (text, id) => {
 		hide: false
 	}
 };
+
+export const typeText = (text) => {
+	console.log('TYPE_TEXT', text);
+	return {
+		type: 'TYPE_TEXT',
+		text
+	}
+}

@@ -1,4 +1,10 @@
-const todos = (state = [], action) => {
+const initialState = {
+    typedText: '',
+    tasks: [],
+    hideCompleted: false
+}
+
+const main = (state = initialState, action = {}) => {
 	switch (action.type) {
 		case 'ADD_TODO':
 			return state;
@@ -8,4 +14,4 @@ const todos = (state = [], action) => {
 	}
 }
 
-export default todos;
+export default main;

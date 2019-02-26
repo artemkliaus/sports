@@ -4,43 +4,40 @@ import InputField from '../../components/InputField/InputField.jsx';
 import Task from '../../components/Task/Task.jsx';
 import Info from '../../components/Info/Info.jsx';
 import './App.sass';
-import addTodo from '../../actions/index.js';
+import { addTodo, typeText } from '../../actions/index.js';
 
 class App extends Component {
 
     constructor () {
         super();
-        this.state = {
-            typedText: '',
-            tasks: [],
-            hideCompleted: false
-        }
 
         this.closeTask = this.closeTask.bind(this);
         this.removeTask = this.removeTask.bind(this);
         this.addTask = this.addTask.bind(this);
         this.inputHandler = this.inputHandler.bind(this);
         this.hideCompleted = this.hideCompleted.bind(this);
+
+        console.log('THIS', this);
     }
 
     addTask () {
-        const { typedText, tasks } = this.state;
+        const { state } = this.props;
+        const { typedText, tasks } = state;
 
         if (typedText) {
-            this.dispatch(addTodo);
-            // const newTasks = tasks.slice();
-            // const id = Math.random().toString();
-            // newTasks.push({
-            //     text: typedText,
-            //     index: id,
-            //     done: false,
-            //     hide: false
-            // });
+            const newTasks = tasks.slice();
+            const id = Math.random().toString();
+            newTasks.push({
+                text: typedText,
+                index: id,
+                done: false,
+                hide: false
+            });
 
-            // this.setState({
-            //     tasks: newTasks,
-            //     typedText: ''
-            // });
+            this.setState({
+                tasks: newTasks,
+                typedText: ''
+            });
         }
     }
 
@@ -59,9 +56,10 @@ class App extends Component {
 
     inputHandler (event) {
         const { value } = event.target;
-        const { typedText } = this.state;
+        const { state, dispatch } = this.props;
+        const { typedText } = state;
 
-        this.setState({typedText: value});
+        dispatch(typeText(value));
     }
 
     closeTask (event) {
@@ -91,21 +89,33 @@ class App extends Component {
 
 
     render () {
+        const { state } = this.props;
         return (
             <div className='todo'>
                 <h1 className='todo__title'>Todo List</h1>
                 <InputField input={this.inputHandler}
                             add={this.addTask}
-                            typedText={this.state.typedText}/>
+                            typedText={state.typedText}/>
                 <div className="tasks-list">
-                    {this.state.tasks.map((el) => {
+                    {state.tasks.map((el) => {
                         return <Task data={el} key={el.index} closeTask={this.closeTask} removeTask={this.removeTask}/>
                     })}
                 </div>
-                <Info count={this.state.tasks.length} hideFunc={this.hideCompleted} hidden={this.state.hideCompleted}/>
+                <Info count={state.tasks.length} hideFunc={this.hideCompleted} hidden={state.hideCompleted}/>
             </div>
         )
     }
 }
 
-export default connect({App});
+const mapStateToProps = state => ({
+    state
+})
+
+const mapDispatchToProps = (dispatch) => {
+    console.log('mapDispatchToProps', dispatch);
+    return {
+        typeText: result => dispatch(typeText(result))
+    };
+}
+
+export default connect(mapStateToProps)(App);
