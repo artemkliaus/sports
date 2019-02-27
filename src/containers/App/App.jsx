@@ -4,7 +4,7 @@ import InputField from '../../components/InputField/InputField.jsx';
 import Task from '../../components/Task/Task.jsx';
 import Info from '../../components/Info/Info.jsx';
 import './App.sass';
-import { addTask, typeText } from '../../actions/index.js';
+import { addTask, typeText, closeTask, removeTask, hideCompletedTasks } from '../../actions/index.js';
 
 class App extends Component {
 
@@ -28,61 +28,35 @@ class App extends Component {
         }
     }
 
-    hideCompleted (event) {
-        const { tasks, hideCompleted } = this.state;
-        const newTasks = tasks.slice();
-        const newArr = newTasks.map((el) => {
-            if (el.done) el.hide = !el.hide;
-            return el;
-        });
-        this.setState({
-            tasks: newArr,
-            hideCompleted: !hideCompleted
-        });
+    hideCompleted () {
+        this.props.hideCompletedTasks();
     }
 
     inputHandler (event) {
         const { value } = event.target;
-        const { typeText } = this.props;
-        typeText(value);
+        this.props.typeText(value);
     }
 
     closeTask (event) {
-        const { tasks } = this.state;
-        const number = event.target.parentElement.getAttribute('data-id');
-        const newTasks = tasks.slice();
-        const currObj = newTasks.find((x, i) => x.index === number);
-        currObj.done = !currObj.done;
-        this.setState({
-            tasks: newTasks
-        });
+        const id = event.target.parentElement.getAttribute('data-id');
+        this.props.closeTask(parseInt(id));
     }
 
     removeTask (event) {
-        const { tasks } = this.state;
-        const number = event.target.parentElement.getAttribute('data-id');
-        let position = null;
-        const newTasks = tasks.slice();
-        const currObj = newTasks.find((x, i) => {
-            if (x.index === number) position = i;
-        });
-        newTasks.splice(position, 1);
-        this.setState({
-            tasks: newTasks
-        });
+        const id = event.target.parentElement.getAttribute('data-id');
+        this.props.removeTask(parseInt(id));
     }
 
 
     render () {
         const { state } = this.props;
-        console.log(state);
         return (
             <div className='todo'>
                 <h1 className='todo__title'>Todo List</h1>
                 <InputField input={this.inputHandler}
                             add={this.addTask}
                             typedText={state.typedText}/>
-                <div className="tasks-list">
+                <div className={"tasks-list " + (state.hideCompleted ? "tasks-list_hide-completed" : '')}>
                     {state.tasks.map((el) => {
                         return <Task data={el} key={el.id} closeTask={this.closeTask} removeTask={this.removeTask}/>
                     })}
@@ -99,7 +73,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
     typeText,
-    addTask
+    addTask,
+    closeTask,
+    removeTask,
+    hideCompletedTasks
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

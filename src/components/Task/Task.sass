@@ -14,9 +14,6 @@
       text-decoration: line-through
       color: gray
 
-  &_hide
-    display: none
-
   &__button-block
     display: inline-flex
     justify-content: space-between
@@ -29,6 +26,9 @@
 
     &:first-letter
       text-transform: capitalize
+
+.tasks-list_hide-completed .task_done
+    display: none
 
 
 @keyframes slide-up
