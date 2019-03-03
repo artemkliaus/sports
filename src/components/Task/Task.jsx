@@ -2,9 +2,7 @@ import React from 'react';
 import './Task.sass';
 
 
-function Task (props) {
-
-    const { data, closeTask, removeTask} = props;
+function Task ({ data, closeTask, removeTask}) {
     let classBlock = 'task';
     let classButton = 'btn';
     classBlock += data.done ? ' task_done' : '';

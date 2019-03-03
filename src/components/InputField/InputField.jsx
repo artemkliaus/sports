@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import './InputField.sass';
 
-function InputField (props) {
-    const { input, typedText, add } = props;
+function InputField ({ input, typedText, add }) {
     return (
         <div className="inputField">
             <input onChange={input} type='text' className='inputField__input' value={typedText}/>

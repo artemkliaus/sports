@@ -1,9 +1,7 @@
 import React from 'react';
 import './Info.sass';
 
-function Info (props) {
-
-  const { count, hideFunc, hidden } = props;
+function Info ({ count, hideFunc, hidden }) {
   const text = hidden ? 'Show' : 'Hide';
   let classCompleted = 'info__completed ';
   classCompleted += hidden ? `${classCompleted}_hide` : '';
